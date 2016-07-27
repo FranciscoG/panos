@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="photojs/photo-sphere-viewer.min.css">
+
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    #photosphere {
+      width: 100%;
+      height: 100%;
+    }
+    .psv-button.custom-button {
+      font-size: 22px;
+      line-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="photosphere"></div>
+
+<script src="js/three.min.js"></script>
+<script src="js/D.min.js"></script>
+<script src="js/uevent.min.js"></script>
+<script src="js/doT.min.js"></script>
+<script src="js/CanvasRenderer.js"></script>
+<script src="js/Projector.js"></script>
+<script src="js/EffectComposer.js"></script>
+<script src="js/RenderPass.js"></script>
+<script src="js/ShaderPass.js"></script>
+<script src="js/MaskPass.js"></script>
+<script src="js/CopyShader.js"></script>
+<script src="js/DeviceOrientationControls.js"></script>
+<script src="photojs/photo-sphere-viewer.min.js"></script>
+
+<script>
+  var panos = [
+    { file:'paris9.jpg', caption: "Paris: Under the Eiffel Tower"},
+    { file:'barcelona1.jpg', caption: "Barcelona: Top of Cathedral in El Born"},
+    { file:'barcelona2.jpg', caption: "Barcelona: Barceloneta beach"},
+    { file:'barcelona3.jpg', caption: "Barcelona: Roof of Gaudi's Casa Mila"},
+    { file:'barcelona4.jpg', caption: "Barcelona: Inside La Sagrada Familia"},
+    { file:'barcelona5.jpg', caption: "Barcelona: Inside La Sagrada Familia"},
+    { file:'barcelona6.jpg', caption: "Barcelona: Top of Parc Guell"},
+    { file:'paris1.jpg', caption: "Paris: Plaza in front of Notre-Dame"},
+    { file:'paris2.jpg', caption: "Paris: 360 view in front of Notre-Dame"},
+    { file:'paris3.jpg', caption: "Paris: Near the Louvre I think"},
+    { file:'paris4.jpg', caption: "Paris: Gardens of Versaille"},
+    { file:'paris5.jpg', caption: "Paris: Boating in the gardens of Versaille"},
+    { file:'paris6.jpg', caption: "Versailles Palace"},
+    { file:'paris7.jpg', caption: "Inside Versailles"},
+    { file:'paris8.jpg', caption: "Paris: Outside Sacre Coeur"},
+    // { file:'paris10.jpg', caption:""},
+    { file:'varberg1.jpg', caption:"Varbeg, Sweden"},
+    { file:'varberg2.jpg', caption:"Varbeg, Sweden"},
+    { file:'varberg3.jpg', caption:"Varbeg, Sweden"}
+  ];
+  var i = 0;
+  console.log(panos[i]);
+
+  var PSV = new PhotoSphereViewer({
+    panorama: 'panos/'+panos[i].file,
+    container: 'photosphere',
+    loading_img: 'photosphere-logo.gif',
+    navbar: [
+      'autorotate', 'zoom',
+      {
+        title: 'previous image',
+        className: 'custom-button',
+        content: 'back &nbsp;',
+        onClick: function() {
+          i--;
+          if (i <= 0) {i = panos.length - 1;}
+          console.log(panos[i]);
+          PSV.setPanorama('panos/'+panos[i].file , true)
+            .then(function() {
+              PSV.setCaption( panos[i].caption );
+            });
+        }
+      },
+      {
+        title: 'next image',
+        className: 'custom-button',
+        content: 'next',
+        onClick: function() {
+          i++;
+          if (i >= panos.length) {i = 0;}
+          console.log(panos[i]);
+          PSV.setPanorama('panos/'+panos[i].file , true)
+            .then(function() {
+              PSV.setCaption( panos[i].caption );
+            });
+        }
+      },
+      'caption',
+      'gyroscope',
+      'fullscreen'
+    ],
+    caption: 'In front of the Notre Damme',
+
+    anim_speed: '-2rpm',
+    default_fov: 50,
+    fisheye: true,
+    move_speed: 1.1,
+    time_anim: false,
+    gyroscope: true,
+    webgl: true,
+    transition: {
+      duration: 1000,
+      loader: true,
+      blur: true
+    }
+  });
+
+  
+</script>
+</body>
+</html>
